@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculadora académica de prestaciones laborales de El Salvador">
+  <title>Calculadora Laboral SV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand">
+        <div class="brand-mark">SV</div>
+        <div>
+          <span class="eyebrow">PROYECTO ACADÉMICO</span>
+          <h1>Calculadora Laboral</h1>
+          <p>Prestaciones y jornadas especiales · El Salvador</p>
+        </div>
+      </div>
+      <div class="hero-badge">Estimación informativa</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div>
+        <span class="eyebrow dark">CÁLCULO EN LÍNEA</span>
+        <h2>Calcula una liquidación laboral de forma sencilla</h2>
+        <p>Completa los tres bloques. El sistema validará los datos y mostrará el desglose de cada concepto.</p>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progreso</span><strong id="progressText">0%</strong></div>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+    </section>
+
+    <form id="calculatorForm" novalidate>
+      <section class="card">
+        <div class="section-head">
+          <div class="step">01</div>
+          <div>
+            <h3>Datos financieros y antigüedad</h3>
+            <p>Información básica del trabajador.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span>Ingreso mensual <b>*</b></span>
+            <div class="input-money"><span>$</span><input id="salario" type="number" min="0.01" step="0.01" placeholder="600.00" required></div>
+            <small>Salario nominal mensual en USD.</small>
+          </label>
+
+          <label class="field">
+            <span>Años laborados <b>*</b></span>
+            <input id="anios" type="number" min="0" step="1" placeholder="5" required>
+            <small>Número entero de años completos.</small>
+          </label>
+
+          <label class="field">
+            <span>Meses adicionales <b>*</b></span>
+            <input id="meses" type="number" min="0" max="11" step="1" placeholder="6" required>
+            <small>De 0 a 11 meses adicionales.</small>
+          </label>
+
+          <label class="field">
+            <span>Sector para el tope legal</span>
+            <select id="sector">
+              <option value="comercio">Comercio, industria y servicios</option>
+              <option value="maquila">Maquila textil y confección</option>
+              <option value="agricola">Agropecuario</option>
+            </select>
+            <small>Se usa para el tope de indemnización/compensación.</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div class="step">02</div>
+          <div>
+            <h3>Causa de finalización</h3>
+            <p>Selecciona una sola opción.</p>
+          </div>
+        </div>
+
+        <div class="closure-grid">
+          <label class="closure-option">
+            <input type="radio" name="tipoCierre" value="despido" checked>
+            <span class="radio-ui"></span>
+            <span><strong>Despido injustificado</strong><small>Indemnización según Art. 58 del Código de Trabajo.</small></span>
+          </label>
+          <label class="closure-option">
+            <input type="radio" name="tipoCierre" value="renuncia">
+            <span class="radio-ui"></span>
+            <span><strong>Renuncia voluntaria</strong><small>Compensación según Ley Reguladora de la Prestación Económica por Renuncia Voluntaria.</small></span>
+          </label>
+        </div>
+
+        <div id="renunciaNotice" class="notice hidden">
+          <strong>Renuncia voluntaria:</strong> la compensación legal requiere, entre otras condiciones, al menos 2 años de servicio continuo y efectivo y el cumplimiento del preaviso y formalidades correspondientes.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div class="step">03</div>
+          <div>
+            <h3>Jornadas extraordinarias y días especiales</h3>
+            <p>Acumulados en el período que deseas calcular.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span>Horas extras diurnas</span>
+            <input id="horasDiurnas" type="number" min="0" step="0.01" value="0">
+            <small>Recargo extraordinario del 100%.</small>
+          </label>
+
+          <label class="field">
+            <span>Horas extras nocturnas</span>
+            <input id="horasNocturnas" type="number" min="0" step="0.01" value="0">
+            <small>Incluye 100% de extra + 25% de nocturnidad.</small>
+          </label>
+
+          <label class="field">
+            <span>Días de asueto laborados</span>
+            <input id="asuetos" type="number" min="0" step="1" value="0">
+            <small>Trabajo en día de asueto remunerado.</small>
+          </label>
+
+          <label class="field">
+            <span>Días de descanso semanal laborados</span>
+            <input id="descansos" type="number" min="0" step="1" value="0">
+            <small>Descanso semanal trabajado.</small>
+          </label>
+        </div>
+
+        <label class="no-apply">
+          <input id="noAplica" type="checkbox">
+          <span class="check-ui"></span>
+          <span><strong>No aplica</strong><small>Desactivar y poner en cero las jornadas especiales.</small></span>
+        </label>
+      </section>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Calcular liquidación <span>→</span></button>
+        <button class="btn secondary" type="button" id="clearBtn">Limpiar</button>
+      </div>
+    </form>
+
+    <section id="results" class="results hidden">
+      <div class="results-top">
+        <div>
+          <span class="eyebrow dark">RESULTADO</span>
+          <h2>Desglose de la liquidación</h2>
+          <p id="resultSubtitle">Estimación calculada con los datos introducidos.</p>
+        </div>
+        <div class="result-actions">
+          <button class="btn secondary" id="printBtn" type="button">Imprimir / Guardar PDF</button>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card"><span>Salario mensual</span><strong id="rSalario">$0.00</strong></div>
+        <div class="summary-card"><span>Salario diario</span><strong id="rDiario">$0.00</strong></div>
+        <div class="summary-card"><span>Antigüedad</span><strong id="rAntiguedad">0 años, 0 meses</strong></div>
+        <div class="summary-card"><span>Causa</span><strong id="rCausa">—</strong></div>
+      </div>
+
+      <div class="result-list">
+        <div class="result-row"><div><strong>Vacación proporcional</strong><small>15 días + 30%, proporcional a la fracción de año.</small></div><strong id="rVacaciones">$0.00</strong></div>
+        <div class="result-row"><div><strong>Aguinaldo proporcional</strong><small>Según antigüedad y proporcionalidad del período indicado.</small></div><strong id="rAguinaldo">$0.00</strong></div>
+        <div class="result-row"><div><strong id="indLabel">Indemnización por despido</strong><small id="indHelp">30 días por año y proporcional, con tope legal.</small></div><strong id="rIndemnizacion">$0.00</strong></div>
+        <div class="result-row"><div><strong>Horas extras diurnas</strong><small>Hora ordinaria + 100%.</small></div><strong id="rDiurnas">$0.00</strong></div>
+        <div class="result-row"><div><strong>Horas extras nocturnas</strong><small>Hora ordinaria + 100% + 25% nocturnidad.</small></div><strong id="rNocturnas">$0.00</strong></div>
+        <div class="result-row"><div><strong>Días de asueto laborados</strong><small>Jornada ordinaria + recargo del 100%.</small></div><strong id="rAsuetos">$0.00</strong></div>
+        <div class="result-row"><div><strong>Días de descanso semanal laborados</strong><small>Jornada ordinaria + recargo mínimo del 50%.</small></div><strong id="rDescansos">$0.00</strong></div>
+      </div>
+
+      <div class="total-card">
+        <div><span>Total estimado</span><small>Sumatoria de los conceptos calculados</small></div>
+        <strong id="rTotal">$0.00</strong>
+      </div>
+
+      <div class="calculation-box">
+        <h3>Detalle del cálculo</h3>
+        <div id="calculationDetails"></div>
+      </div>
+
+      <div class="legal-box">
+        <strong>Importante</strong>
+        <p>Esta herramienta es un cálculo académico e informativo. No sustituye el cálculo oficial del Ministerio de Trabajo ni asesoría jurídica. La prestación real puede depender de fechas exactas, salario básico, comisiones, tipo de contrato, requisitos de renuncia y otras circunstancias.</p>
+      </div>
+    </section>
+
+    <section class="card formulas">
+      <div class="section-head">
+        <div class="step">i</div>
+        <div>
+          <h3>Fórmulas incorporadas</h3>
+          <p>Referencia resumida para la presentación del proyecto.</p>
+        </div>
+      </div>
+      <div class="formula-grid">
+        <article><h4>Despido injustificado</h4><p>30 días de salario básico por año y proporcional por fracciones. Mínimo 15 días. Tope: 4 × salario mínimo diario legal vigente.</p></article>
+        <article><h4>Renuncia voluntaria</h4><p>15 días de salario básico por año, proporcional por fracción, sujeto a los requisitos de la ley y a un máximo de 2 × salario mínimo diario.</p></article>
+        <article><h4>Horas extras diurnas</h4><p>Hora ordinaria + 100% de recargo.</p></article>
+        <article><h4>Horas extras nocturnas</h4><p>Hora ordinaria + 100% de recargo + 25% por nocturnidad.</p></article>
+        <article><h4>Asuetos laborados</h4><p>Salario ordinario + 100% de recargo, es decir, el doble de la jornada ordinaria.</p></article>
+        <article><h4>Vacación y aguinaldo</h4><p>Se muestra una estimación proporcional con base en los meses adicionales ingresados. Para un cálculo oficial deben usarse las fechas exactas.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Calculadora Laboral SV · Proyecto académico · El Salvador</p>
+    <p>Basada en disposiciones laborales salvadoreñas vigentes consultadas para el proyecto.</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
